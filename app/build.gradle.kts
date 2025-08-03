@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.zagirlek.rickandmortytest"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.zagirlek.rickandmortytest"
@@ -47,6 +47,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.navigation.common.android)
     implementation(libs.androidx.navigation.compose.android)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
     ksp(libs.androidx.room.ksp)
 
     implementation(libs.androidx.core.ktx)
