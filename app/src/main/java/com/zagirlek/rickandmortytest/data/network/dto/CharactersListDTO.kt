@@ -1,0 +1,15 @@
+package com.zagirlek.rickandmortytest.data.network.dto
+
+import com.google.gson.annotations.SerializedName
+
+data class CharactersListDTO(
+    @SerializedName("info") val info: Info,
+    @SerializedName("results") val characterList: List<CharacterInfoDTO>
+){
+    data class Info(
+        @SerializedName("count") val count: Int,
+        @SerializedName("pages") val pages: Int,
+        @SerializedName("next") val next: String?,
+        @SerializedName("prev") val previous: String?
+    )
+}
