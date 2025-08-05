@@ -1,14 +1,16 @@
 package com.zagirlek.rickandmortytest.data.network.dto
 
+import com.google.gson.annotations.SerializedName
 
-data class CharacterInfoDTO(
-    val id: Int,
-    val name: String,
-    val status: StatusDTO,
-    val species: String,
-    val gender: GenderDTO,
-    val origin: LocationDTO,
-    val location: LocationDTO,
-    val image: String,
-    val url: String
+
+data class CharacterDTO(
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("status") val status: StatusDTO,
+    @SerializedName("species") val species: String,
+    @SerializedName("gender") val gender: GenderDTO,
+    @SerializedName("origin") val origin: LocationUrlDTO,
+    @SerializedName("location") val location: LocationUrlDTO,
+    @SerializedName("image") val image: String,
+    @SerializedName("url") val url: String
 )

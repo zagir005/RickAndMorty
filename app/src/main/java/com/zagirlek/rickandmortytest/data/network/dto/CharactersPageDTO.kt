@@ -2,9 +2,9 @@ package com.zagirlek.rickandmortytest.data.network.dto
 
 import com.google.gson.annotations.SerializedName
 
-data class CharactersListDTO(
+data class CharactersPageDTO(
     @SerializedName("info") val info: Info,
-    @SerializedName("results") val characterList: List<CharacterInfoDTO>
+    @SerializedName("results") val characterList: List<CharacterDTO>
 ){
     data class Info(
         @SerializedName("count") val count: Int,
