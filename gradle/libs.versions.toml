@@ -14,7 +14,9 @@ navigationCommonAndroid = "2.9.3"
 navigationComposeAndroid = "2.9.3"
 retrofit = "3.0.0"
 coil = "3.3.0"
-okhttp-logging_interceptor = "4.12.0"
+okhttp-logging_interceptor = "5.1.0"
+paging = "3.3.6"
+
 [libraries]
 kotlin_serializatoin = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin_serializatoin_json"}
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room"}
@@ -28,6 +30,11 @@ androidx-navigation-compose-android = { group = "androidx.navigation", name = "n
 coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coil"}
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil"}
 okhttp-logging_interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp-logging_interceptor"}
+
+paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging"}
+paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging"}
+
+
 
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }

@@ -15,7 +15,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            RickAndMortyTestTheme {
+            RickAndMortyTestTheme(
+                darkTheme = false
+            ) {
                 val navController = rememberNavController()
 
                 AppUi(navController)

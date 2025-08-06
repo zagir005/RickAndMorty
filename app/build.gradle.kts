@@ -53,6 +53,9 @@ dependencies {
     implementation(libs.coil.okhttp)
     implementation(libs.coil.compose)
     implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.paging.compose)
+    implementation(libs.paging.common)
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

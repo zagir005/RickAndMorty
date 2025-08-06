@@ -1,15 +1,23 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters
 
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.paging.PagingData
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemKey
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.ui.screen.characters.elements.CharacterCard
 import com.zagirlek.rickandmortytest.ui.screen.characters.viewmodel.CharactersViewModel
+import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun CharactersScreen(
@@ -21,9 +29,11 @@ fun CharactersScreen(
 
     when{
         uiState.isLoading() -> CharactersLoading()
-        uiState.isError() -> CharactersError()
-        uiState.isListLoaded() -> CharactersList(
-            characterList = uiState.charactersList,
+        uiState.isError() -> CharactersError(
+
+        )
+        uiState.isListLoaded() -> PaginatedCharactersList(
+            characterList = viewModel.paginatedDataFlow,
             onCharacterClick = {
                 toDetails(it)
             }
@@ -33,20 +43,27 @@ fun CharactersScreen(
 }
 
 @Composable
-private fun CharactersList(
-    characterList: List<Character>,
+private fun PaginatedCharactersList(
+    characterList: Flow<PagingData<Character>>,
     onCharacterClick: (id: Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn {
+    val pagingCharacters = characterList.collectAsLazyPagingItems()
+
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         items(
-            items = characterList,
-            key = { it.id }
-        ){ character ->
+            count = pagingCharacters.itemCount,
+            key = pagingCharacters.itemKey { it.id }
+        ){ index ->
             CharacterCard(
-                character = character
+                character = pagingCharacters[index]!!
             ) {
-                onCharacterClick(character.id)
+                onCharacterClick(pagingCharacters[index]?.id ?: 1)
             }
         }
     }
@@ -58,6 +75,6 @@ private fun CharactersLoading(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun CharactersError(modifier: Modifier = Modifier) {
+private fun CharactersError(){
 
 }

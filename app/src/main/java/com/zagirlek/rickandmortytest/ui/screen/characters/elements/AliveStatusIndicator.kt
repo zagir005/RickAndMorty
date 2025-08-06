@@ -29,16 +29,16 @@ fun AliveStatusIndicator(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .background(
                 color = Dark,
-                shape = AbsoluteRoundedCornerShape(topLeft = 10.dp)
+                shape = AbsoluteRoundedCornerShape(topLeft = 12.dp)
             )
             .padding(vertical = 2.dp, horizontal = 4.dp)
     ){
         Row(
             modifier = Modifier
-                .padding(6.dp),
+                .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
@@ -55,10 +55,10 @@ fun AliveStatusIndicator(
             )
             Spacer(
                 modifier = Modifier
-                    .size(width = 12.dp, height = 8.dp)
+                    .size(width = 8.dp, height = 8.dp)
             )
             Text(
-                text = "Alive",
+                text = characterStatus.toString(),
                 color = White
             )
         }
