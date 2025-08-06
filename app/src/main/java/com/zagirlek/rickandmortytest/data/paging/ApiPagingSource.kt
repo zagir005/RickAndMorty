@@ -6,7 +6,7 @@ import com.zagirlek.rickandmortytest.data.mapper.getPageNumberFromUrl
 import com.zagirlek.rickandmortytest.data.network.dto.CharacterDTO
 import com.zagirlek.rickandmortytest.data.network.dto.CharactersPageDTO
 import com.zagirlek.rickandmortytest.data.network.service.CharacterService
-import com.zagirlek.rickandmortytest.data.network.utils.CharactersFilters
+import com.zagirlek.rickandmortytest.domain.model.CharactersFilters
 import com.zagirlek.rickandmortytest.domain.model.Character
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
@@ -20,13 +20,13 @@ class ApiPagingSource(
         return runCatching {
             val currentPage = params.key ?: 1
 
-            val responseData = with(charactersFilters){
+            val responseData = with(receiver = charactersFilters){
                 characterService.filterCharactersPage(
                     name = name,
-                    status = status,
+                    status = status?.name,
                     species = species,
                     type = type,
-                    gender = gender,
+                    gender = gender?.name,
                     page = currentPage
                 )
             }

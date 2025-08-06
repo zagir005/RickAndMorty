@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.zagirlek.rickandmortytest.data.mapper.toDomain
 import com.zagirlek.rickandmortytest.data.network.service.CharacterService
-import com.zagirlek.rickandmortytest.data.network.utils.CharactersFilters
+import com.zagirlek.rickandmortytest.domain.model.CharactersFilters
 import com.zagirlek.rickandmortytest.data.paging.ApiPagingSource
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.repository.CharactersPagingRepository
