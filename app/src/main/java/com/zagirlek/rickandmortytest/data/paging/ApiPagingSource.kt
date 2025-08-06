@@ -8,6 +8,7 @@ import com.zagirlek.rickandmortytest.data.network.dto.CharactersPageDTO
 import com.zagirlek.rickandmortytest.data.network.service.CharacterService
 import com.zagirlek.rickandmortytest.data.network.utils.CharactersFilters
 import com.zagirlek.rickandmortytest.domain.model.Character
+import kotlinx.coroutines.delay
 import retrofit2.HttpException
 
 class ApiPagingSource(
@@ -26,9 +27,11 @@ class ApiPagingSource(
                     species = species,
                     type = type,
                     gender = gender,
-                    currentPage
+                    page = currentPage
                 )
             }
+
+            delay(2000L)
 
             LoadResult.Page(
                 data = responseData.characterList,

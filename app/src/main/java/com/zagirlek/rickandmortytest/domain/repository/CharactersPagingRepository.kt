@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface CharactersPagingRepository {
 
     fun getFilterPaginatedCharactersList(
-        charactersFilters: CharactersFilters
+        charactersFilters: CharactersFilters = CharactersFilters()
     ): Flow<PagingData<Character>>
 
 }

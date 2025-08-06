@@ -1,60 +1,47 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters.viewmodel
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.zagirlek.rickandmortytest.RickAndMortyApp
 import com.zagirlek.rickandmortytest.data.network.utils.CharactersFilters
+import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.repository.CharacterRepository
 import com.zagirlek.rickandmortytest.domain.repository.CharactersPagingRepository
 import com.zagirlek.rickandmortytest.ui.screen.characters.model.CharactersScreenUiState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 
 class CharactersViewModel(
     private val characterRepository: CharacterRepository,
     private val charactersPagingRepository: CharactersPagingRepository
 ): ViewModel() {
 
-    val paginatedDataFlow = charactersPagingRepository.getFilterPaginatedCharactersList(
-        CharactersFilters()
-    ).cachedIn(viewModelScope)
+    private val currFilters = MutableStateFlow(CharactersFilters())
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val paginatedCharacters = currFilters
+        .flatMapLatest { filters ->
+            charactersPagingRepository.getFilterPaginatedCharactersList(filters)
+        }
+        .cachedIn(viewModelScope)
 
-    private val _uiState: MutableStateFlow<CharactersScreenUiState> = MutableStateFlow(value = CharactersScreenUiState(loading = true))
+    private val _uiState: MutableStateFlow<CharactersScreenUiState> =
+        MutableStateFlow(
+            value = CharactersScreenUiState(loading = true)
+        )
     val uiState: StateFlow<CharactersScreenUiState> = _uiState.asStateFlow()
 
-    init {
-        loadCharacters()
-        Log.d("TAG", _uiState.value.charactersList.size.toString())
-    }
-
-    private fun loadCharacters(){
-        viewModelScope.launch(context = Dispatchers.IO) {
-            characterRepository
-                .getFilterCharacters()
-                .onSuccess { charactersPage ->
-                    _uiState.update {
-                        it.copy(loading = false, error = null, charactersList = charactersPage.characterList)
-                    }
-                }
-                .onFailure { error ->
-                    _uiState.update {
-                        it.copy(loading = false, error = error.cause, charactersList = listOf())
-                    }
-                }
+    fun updateCharactersByFilter(
+        charactersFilters: CharactersFilters
+    ){
+        currFilters.update {
+            charactersFilters
         }
     }
 

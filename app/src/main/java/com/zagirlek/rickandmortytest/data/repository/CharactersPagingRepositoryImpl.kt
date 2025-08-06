@@ -25,15 +25,18 @@ class CharactersPagingRepositoryImpl(
             ),
             pagingSourceFactory = {
                 ApiPagingSource(
-                    charactersService,
-                    charactersFilters
+                    characterService = charactersService,
+                    charactersFilters = charactersFilters
                 )
             }
-        ).flow
+        )
+            .flow
             .map {
                 it.map { characterDTO ->
                     characterDTO.toDomain()
                 }
             }
+
+
     }
 }
