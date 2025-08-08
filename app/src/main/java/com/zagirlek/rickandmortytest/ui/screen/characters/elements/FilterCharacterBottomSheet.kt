@@ -15,10 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -26,22 +23,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zagirlek.rickandmortytest.domain.model.CharactersFilters
+import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import com.zagirlek.rickandmortytest.domain.model.CharacterGender
 import com.zagirlek.rickandmortytest.domain.model.CharacterStatus
-import com.zagirlek.rickandmortytest.ui.theme.Gray
 import com.zagirlek.rickandmortytest.ui.theme.WhiteGray
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterCharacterBottomSheet(
     bottomSheetState: SheetState,
-    currFilters: CharactersFilters,
+    currFilters: CharacterFilters,
     onDismiss: () -> Unit,
-    onFilter: (CharactersFilters) -> Unit,
+    onFilter: (CharacterFilters) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var currFiltersState by remember { mutableStateOf(value = currFilters) }
@@ -119,7 +114,7 @@ fun FilterCharacterBottomSheet(
             ) {
                 Button(
                     onClick = {
-                        onFilter(CharactersFilters())
+                        onFilter(CharacterFilters())
                     },
                     modifier = modifier
                         .weight(1f)

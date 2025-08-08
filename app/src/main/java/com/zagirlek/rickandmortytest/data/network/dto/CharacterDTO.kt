@@ -9,8 +9,8 @@ data class CharacterDTO(
     @SerializedName("status") val status: StatusDTO,
     @SerializedName("species") val species: String,
     @SerializedName("gender") val gender: GenderDTO,
-    @SerializedName("origin") val origin: LocationUrlDTO,
-    @SerializedName("location") val location: LocationUrlDTO,
+    @SerializedName("origin") val origin: LocationDTO,
+    @SerializedName("location") val location: LocationDTO,
     @SerializedName("image") val image: String,
     @SerializedName("url") val url: String
 )

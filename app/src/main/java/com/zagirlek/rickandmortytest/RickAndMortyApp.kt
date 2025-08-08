@@ -1,6 +1,8 @@
 package com.zagirlek.rickandmortytest
 
 import android.app.Application
+import androidx.room.Room
+import com.zagirlek.rickandmortytest.data.local.CharacterDatabase
 import com.zagirlek.rickandmortytest.data.network.retrofit.RickAndMortyRetrofit
 import com.zagirlek.rickandmortytest.data.repository.CharacterRepositoryImpl
 import com.zagirlek.rickandmortytest.data.repository.CharactersPagingRepositoryImpl
@@ -20,5 +22,13 @@ class RickAndMortyApp: Application() {
         )
     }
 
-
+    val characterDatabase by lazy{
+        Room.databaseBuilder(
+            context = this,
+            klass = CharacterDatabase::class.java,
+            name = "CharacterDatabase"
+        )
+            .fallbackToDestructiveMigration(dropAllTables = true)
+            .build()
+    }
 }

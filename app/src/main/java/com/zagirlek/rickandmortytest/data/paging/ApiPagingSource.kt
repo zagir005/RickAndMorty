@@ -4,23 +4,21 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.zagirlek.rickandmortytest.data.mapper.getPageNumberFromUrl
 import com.zagirlek.rickandmortytest.data.network.dto.CharacterDTO
-import com.zagirlek.rickandmortytest.data.network.dto.CharactersPageDTO
 import com.zagirlek.rickandmortytest.data.network.service.CharacterService
-import com.zagirlek.rickandmortytest.domain.model.CharactersFilters
-import com.zagirlek.rickandmortytest.domain.model.Character
+import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
 
 class ApiPagingSource(
     private val characterService: CharacterService,
-    private val charactersFilters: CharactersFilters
+    private val characterFilters: CharacterFilters
 ): PagingSource<Int, CharacterDTO>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, CharacterDTO> {
         return runCatching {
             val currentPage = params.key ?: 1
 
-            val responseData = with(receiver = charactersFilters){
+            val responseData = with(receiver = characterFilters){
                 characterService.filterCharactersPage(
                     name = name,
                     status = status?.name,

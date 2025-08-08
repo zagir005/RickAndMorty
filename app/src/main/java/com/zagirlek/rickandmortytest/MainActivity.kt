@@ -8,6 +8,8 @@ import androidx.navigation.NavHost
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.findNavController
+import androidx.paging.PagingSource
+import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.ui.theme.RickAndMortyTestTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,6 +21,7 @@ class MainActivity : ComponentActivity() {
                 darkTheme = false
             ) {
                 val navController = rememberNavController()
+
 
                 AppUi(navController)
 

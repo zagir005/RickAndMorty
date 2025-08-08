@@ -1,6 +1,6 @@
 package com.zagirlek.rickandmortytest.domain.model
 
-data class CharactersFilters(
+data class CharacterFilters(
     val name: String? = null,
     val status: CharacterStatus? = null,
     val species: String? = null,

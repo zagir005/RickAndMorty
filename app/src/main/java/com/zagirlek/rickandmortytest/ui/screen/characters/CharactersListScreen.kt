@@ -1,6 +1,5 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,12 +8,10 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -31,11 +28,9 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.zagirlek.rickandmortytest.domain.model.CharactersFilters
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.ui.screen.characters.elements.CharacterCard
 import com.zagirlek.rickandmortytest.ui.screen.characters.elements.FilterCharacterBottomSheet
-import com.zagirlek.rickandmortytest.ui.screen.characters.viewmodel.CharactersViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,7 +67,7 @@ fun CharactersListScreen(
         if (showFiltersBottomSheet){
             FilterCharacterBottomSheet(
                 bottomSheetState = filterBottomSheetState,
-                currFilters = uiState.charactersFilters,
+                currFilters = uiState.characterFilters,
                 onDismiss = {
 
                     scope.launch {
@@ -83,7 +78,7 @@ fun CharactersListScreen(
                     }
                 },
                 onFilter = {
-                    viewModel.updateCharactersByFilter(charactersFilters = it)
+                    viewModel.updateCharactersByFilter(characterFilters = it)
                     scope.launch {
                         filterBottomSheetState.hide()
                     }.invokeOnCompletion {
