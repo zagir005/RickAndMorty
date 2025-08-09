@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.kotlin.serializatoin)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
     implementation(libs.androidx.navigation.common.android)
     implementation(libs.androidx.navigation.compose.android)
     implementation(libs.retrofit)

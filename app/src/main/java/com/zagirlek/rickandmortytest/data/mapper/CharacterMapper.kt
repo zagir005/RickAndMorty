@@ -39,6 +39,17 @@ fun CharacterDTO.toLocal() = CharacterEntity(
     image = image
 )
 
+fun CharacterEntity.toDomain() = Character(
+    id = id,
+    name = name,
+    status = status,
+    species = species,
+    gender = gender,
+    origin = CharacterLocation(0, origin),
+    location = CharacterLocation(0, location),
+    image = image,
+    url = ""
+)
 fun CharacterDTO.toDomain() = Character(
     id = id,
     name = name,

@@ -9,7 +9,7 @@ import com.zagirlek.rickandmortytest.data.local.entities.RemoteKeyEntity
 
 @Database(
     entities = [CharacterEntity::class, RemoteKeyEntity::class],
-    version = 1
+    version = 2
 )
 abstract class CharacterDatabase: RoomDatabase() {
     abstract fun characterDao(): CharacterDao

@@ -13,21 +13,24 @@ import com.zagirlek.rickandmortytest.data.mapper.toLocal
 import com.zagirlek.rickandmortytest.data.network.service.CharacterService
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
+import okio.IOException
+import retrofit2.HttpException
 
 @OptIn(ExperimentalPagingApi::class)
 class CharacterRemoteMediator(
     private val filters: CharacterFilters,
     private val database: CharacterDatabase,
     private val network: CharacterService
-): RemoteMediator<Int, Character>() {
+): RemoteMediator<Int, CharacterEntity>() {
 
     private val remoteKeyDao = database.remoteKeyDao()
     private val characterDao = database.characterDao()
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, Character>
+        state: PagingState<Int, CharacterEntity>
     ): MediatorResult {
+
         val pageKey = when(loadType){
             LoadType.REFRESH -> 1
             LoadType.PREPEND -> return MediatorResult.Success(true)
@@ -35,6 +38,7 @@ class CharacterRemoteMediator(
                 remoteKeyDao.remoteKeysByFilters(filters)?.nextPageKey ?: return MediatorResult.Success(true)
             }
         }
+
 
         return try {
             val response = with(filters){
@@ -48,26 +52,36 @@ class CharacterRemoteMediator(
                 )
             }
 
+            val nextPageKey = response.info.next?.getPageNumberFromUrl()
+            val prevPageKey = response.info.previous?.getPageNumberFromUrl()
 
             database.withTransaction {
                 if (loadType == LoadType.REFRESH){
-                    characterDao.clearAll()
+                    characterDao.deleteByFilters(
+                        name = filters.name,
+                        status = filters.status?.name,
+                        species = filters.species,
+                        gender = filters.gender?.name
+                    )
+                    remoteKeyDao.deleteByFilters(filters)
                 }
                 remoteKeyDao.insertOrReplace(
                     RemoteKeyEntity(
                         filters = filters,
                         pageKey = pageKey,
-                        nextPageKey = response.info.next?.getPageNumberFromUrl(),
-                        previousPageKey = response.info.previous?.getPageNumberFromUrl()
+                        nextPageKey = nextPageKey,
+                        previousPageKey = prevPageKey)
                     )
-                )
+
                 characterDao.insertAll(
                     characters = response.characterList.map { it.toLocal() }
                 )
             }
 
-            MediatorResult.Success(response.info.next?.getPageNumberFromUrl() == null)
-        }catch (e: Throwable){
+            MediatorResult.Success(nextPageKey == null)
+        }catch (e: IOException){
+            MediatorResult.Error(e)
+        }catch (e: HttpException){
             MediatorResult.Error(e)
         }
     }

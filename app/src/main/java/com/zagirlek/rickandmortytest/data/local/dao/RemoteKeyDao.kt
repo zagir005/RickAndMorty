@@ -4,10 +4,15 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.TypeConverters
+import com.zagirlek.rickandmortytest.data.local.converters.Converters
 import com.zagirlek.rickandmortytest.data.local.entities.RemoteKeyEntity
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 
 @Dao
+@TypeConverters(
+    Converters::class
+)
 interface RemoteKeyDao{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

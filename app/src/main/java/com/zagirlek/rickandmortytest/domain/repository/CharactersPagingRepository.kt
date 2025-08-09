@@ -1,6 +1,7 @@
 package com.zagirlek.rickandmortytest.domain.repository
 
 import androidx.paging.PagingData
+import com.zagirlek.rickandmortytest.data.local.entities.CharacterEntity
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import com.zagirlek.rickandmortytest.domain.model.Character
 import kotlinx.coroutines.flow.Flow

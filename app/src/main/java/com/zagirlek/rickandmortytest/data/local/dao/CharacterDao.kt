@@ -5,11 +5,16 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.TypeConverters
+import com.zagirlek.rickandmortytest.data.local.converters.Converters
 import com.zagirlek.rickandmortytest.data.local.entities.CharacterEntity
 import com.zagirlek.rickandmortytest.domain.model.CharacterGender
 import com.zagirlek.rickandmortytest.domain.model.CharacterStatus
 
 @Dao
+@TypeConverters(
+    Converters::class
+)
 interface CharacterDao {
 
     @Query("""
@@ -18,18 +23,28 @@ interface CharacterDao {
           AND (:status IS NULL OR status = :status)
           AND (:species IS NULL OR species LIKE '%' || :species || '%')
           AND (:gender IS NULL OR gender = :gender)
-          AND (:origin IS NULL OR origin LIKE '%' || :origin || '%')
-          AND (:location IS NULL OR location LIKE '%' || :location || '%')
-        ORDER BY name ASC
+        ORDER BY id ASC
     """)
     fun getCharactersPagingSource(
         name: String? = null,
         status: CharacterStatus? = null,
         species: String? = null,
         gender: CharacterGender? = null,
-        origin: String? = null,
-        location: String? = null,
     ): PagingSource<Int, CharacterEntity>
+
+    @Query("""
+        DELETE FROM characters
+        WHERE (:name IS NULL OR name LIKE '%' || :name || '%')
+          AND (:status IS NULL OR status = :status)
+          AND (:species IS NULL OR species LIKE '%' || :species || '%')
+          AND (:gender IS NULL OR gender = :gender)
+    """)
+    suspend fun deleteByFilters(
+        name: String?,
+        status: String?,
+        species: String?,
+        gender: String?
+    )
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(characters: List<CharacterEntity>)
@@ -42,4 +57,6 @@ interface CharacterDao {
 
     @Query("SELECT * FROM characters WHERE id = :id LIMIT 1")
     suspend fun getCharacterById(id: Int): CharacterEntity?
+
+
 }

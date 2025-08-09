@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,6 +53,8 @@ fun CharactersListScreen(
         skipPartiallyExpanded = true
     )
 
+    val characterGridState: LazyGridState = rememberLazyGridState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
@@ -69,7 +73,6 @@ fun CharactersListScreen(
                 bottomSheetState = filterBottomSheetState,
                 currFilters = uiState.characterFilters,
                 onDismiss = {
-
                     scope.launch {
                         filterBottomSheetState.hide()
                     }.invokeOnCompletion {
@@ -78,9 +81,10 @@ fun CharactersListScreen(
                     }
                 },
                 onFilter = {
-                    viewModel.updateCharactersByFilter(characterFilters = it)
                     scope.launch {
+                        viewModel.updateCharactersByFilter(characterFilters = it)
                         filterBottomSheetState.hide()
+                        characterGridState.animateScrollToItem(index = 0)
                     }.invokeOnCompletion {
                         if (!filterBottomSheetState.isVisible)
                             showFiltersBottomSheet = false
@@ -89,19 +93,21 @@ fun CharactersListScreen(
             )
         }
 
-        RefreshingPaginatedCharactersList(
-            characterList = paginatedCharactersList,
-            onCharacterClick = {
-
-            },
+        PullToRefresh(
             onRefresh = {
                 paginatedCharactersList.refresh()
-
             },
             isRefreshing = isLoading,
             modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues)
-        )
+        ){
+            PaginatedCharactersList(
+                characterList = paginatedCharactersList,
+                state = characterGridState,
+                onCharacterClick = { }
+            )
+        }
     }
 
 
@@ -118,12 +124,40 @@ fun CharactersListScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun RefreshingPaginatedCharactersList(
+private fun PaginatedCharactersList(
     characterList: LazyPagingItems<Character>,
     onCharacterClick: (id: Int) -> Unit,
-    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+    state: LazyGridState = rememberLazyGridState()
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        state = state,
+        modifier = modifier
+    ) {
+        items(
+            count = characterList.itemCount,
+            key = characterList.itemKey { it.id }
+        ){ index ->
+            CharacterCard(
+                character = characterList[index]!!
+            ) {
+                onCharacterClick(characterList[index]?.id ?: 1)
+            }
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun PullToRefresh(
     isRefreshing: Boolean,
-    modifier: Modifier = Modifier
+    onRefresh: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
 ) {
     PullToRefreshBox(
         isRefreshing = isRefreshing,
@@ -131,23 +165,7 @@ private fun RefreshingPaginatedCharactersList(
         modifier = modifier
             .fillMaxSize()
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            contentPadding = PaddingValues(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            items(
-                count = characterList.itemCount,
-                key = characterList.itemKey { it.id }
-            ){ index ->
-                CharacterCard(
-                    character = characterList[index]!!
-                ) {
-                    onCharacterClick(characterList[index]?.id ?: 1)
-                }
-            }
-        }
+        content()
     }
 }
 

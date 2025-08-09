@@ -10,6 +10,21 @@ import com.zagirlek.rickandmortytest.domain.repository.CharacterRepository
 import com.zagirlek.rickandmortytest.domain.repository.CharactersPagingRepository
 
 class RickAndMortyApp: Application() {
+    lateinit var characterDatabase: CharacterDatabase
+        private set
+
+    override fun onCreate() {
+        super.onCreate()
+
+        characterDatabase = Room.databaseBuilder(
+            context = this,
+            klass = CharacterDatabase::class.java,
+            name = "CharacterDatabase"
+        )
+            .fallbackToDestructiveMigration(dropAllTables = true)
+            .build()
+    }
+
     val characterRepository: CharacterRepository by lazy {
         CharacterRepositoryImpl(
             characterService = RickAndMortyRetrofit.provideCharacterService()
@@ -18,17 +33,8 @@ class RickAndMortyApp: Application() {
 
     val charactersPagingRepository: CharactersPagingRepository by lazy {
         CharactersPagingRepositoryImpl(
-            charactersService = RickAndMortyRetrofit.provideCharacterService()
+            charactersService = RickAndMortyRetrofit.provideCharacterService(),
+            characterDatabase = characterDatabase
         )
-    }
-
-    val characterDatabase by lazy{
-        Room.databaseBuilder(
-            context = this,
-            klass = CharacterDatabase::class.java,
-            name = "CharacterDatabase"
-        )
-            .fallbackToDestructiveMigration(dropAllTables = true)
-            .build()
     }
 }
