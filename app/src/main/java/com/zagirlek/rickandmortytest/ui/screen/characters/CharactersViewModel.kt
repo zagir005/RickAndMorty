@@ -4,47 +4,67 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.paging.cachedIn
 import com.zagirlek.rickandmortytest.RickAndMortyApp
-import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import com.zagirlek.rickandmortytest.domain.repository.CharactersPagingRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.zagirlek.rickandmortytest.ui.screen.characters.model.CharactersAction
+import com.zagirlek.rickandmortytest.ui.screen.characters.model.CharactersState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class CharactersViewModel(
     private val charactersPagingRepository: CharactersPagingRepository
 ): ViewModel() {
-    private val _uiState: MutableStateFlow<CharactersScreenUiState> =
+    private val _uiState: MutableStateFlow<CharactersState> =
         MutableStateFlow(
-            value = CharactersScreenUiState(loading = true)
+            value = CharactersState()
         )
+    val uiState: StateFlow<CharactersState> = _uiState.asStateFlow()
 
-    val uiState: StateFlow<CharactersScreenUiState> = _uiState.asStateFlow()
+    init {
+        action(CharactersAction.LoadCharacters())
+    }
 
-    private val currFilters = MutableStateFlow(_uiState.value.characterFilters)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val paginatedCharacters = currFilters
-        .flatMapLatest { filters ->
-            charactersPagingRepository.getFilterPaginatedCharactersList(filters)
-        }
-        .cachedIn(viewModelScope)
-
-
-    fun updateCharactersByFilter(
-        characterFilters: CharacterFilters
-    ){
-        _uiState.update {
-            it.copy(
-                characterFilters = characterFilters
-            )
-        }
-        currFilters.update {
-            characterFilters
+    fun action(charactersAction: CharactersAction){
+        when(val action = charactersAction){
+            is CharactersAction.LoadCharacters -> {
+                _uiState.update {
+                    it.copy(
+                        charactersPagingItems = charactersPagingRepository
+                            .getFilterPaginatedCharactersList(characterFilters = action.filter)
+                    )
+                }
+            }
+            is CharactersAction.ShowFilterBottomSheet -> {
+                _uiState.update {
+                    it.copy(
+                        isFilterSheetShown = true
+                    )
+                }
+            }
+            is CharactersAction.HideFilterBottomSheet -> {
+                _uiState.update {
+                    it.copy(
+                        isFilterSheetShown = false
+                    )
+                }
+            }
+            is CharactersAction.SearchByName -> {
+                _uiState.update {
+                    it.copy(
+                        charactersPagingItems = charactersPagingRepository
+                            .getFilterPaginatedCharactersList(
+                                characterFilters = _uiState.value.characterFilters.copy(
+                                    name = action.name.let { name ->
+                                        name.ifBlank { null }
+                                    }
+                                )
+                            )
+                    )
+                }
+            }
         }
     }
 

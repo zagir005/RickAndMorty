@@ -1,11 +1,13 @@
 package com.zagirlek.rickandmortytest.data.local.dao
 
+import android.annotation.SuppressLint
 import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.TypeConverters
+import androidx.room.paging.LimitOffsetPagingSource
 import com.zagirlek.rickandmortytest.data.local.converters.Converters
 import com.zagirlek.rickandmortytest.data.local.entities.CharacterEntity
 import com.zagirlek.rickandmortytest.domain.model.CharacterGender
@@ -17,6 +19,7 @@ import com.zagirlek.rickandmortytest.domain.model.CharacterStatus
 )
 interface CharacterDao {
 
+    @SuppressLint("RestrictedApi")
     @Query("""
         SELECT * FROM characters
         WHERE (:name IS NULL OR name LIKE '%' || :name || '%')

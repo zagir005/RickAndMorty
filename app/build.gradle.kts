@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.paging.compose)
     implementation(libs.paging.common)
+    implementation(libs.shimmer)
 
 
     implementation(libs.androidx.core.ktx)

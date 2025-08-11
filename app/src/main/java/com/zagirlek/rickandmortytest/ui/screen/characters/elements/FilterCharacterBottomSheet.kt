@@ -18,6 +18,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,11 +34,11 @@ import com.zagirlek.rickandmortytest.ui.theme.WhiteGray
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterCharacterBottomSheet(
-    bottomSheetState: SheetState,
     currFilters: CharacterFilters,
-    onDismiss: () -> Unit,
-    onFilter: (CharacterFilters) -> Unit,
-    modifier: Modifier = Modifier
+    onDismiss: () -> Unit = { },
+    onFilter: (CharacterFilters) -> Unit = { },
+    modifier: Modifier = Modifier,
+    bottomSheetState: SheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
 ) {
     var currFiltersState by remember { mutableStateOf(value = currFilters) }
 
