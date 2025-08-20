@@ -4,7 +4,7 @@ package com.zagirlek.rickandmortytest.domain.repository
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharactersPage
 
-interface CharacterRepository {
+interface RemoteCharacterRepository {
 
     suspend fun getFilterCharacters(
         name: String? = null,

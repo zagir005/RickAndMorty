@@ -2,6 +2,9 @@ package com.zagirlek.rickandmortytest.data.mapper
 
 import android.util.Log
 import com.zagirlek.rickandmortytest.data.local.entities.CharacterEntity
+import com.zagirlek.rickandmortytest.data.mapper.ext.getEpisodeId
+import com.zagirlek.rickandmortytest.data.mapper.ext.getIdFromLocationUrl
+import com.zagirlek.rickandmortytest.data.mapper.ext.getPageNumberFromUrl
 import com.zagirlek.rickandmortytest.data.network.dto.CharacterDTO
 import com.zagirlek.rickandmortytest.data.network.dto.CharactersPageDTO
 import com.zagirlek.rickandmortytest.data.network.dto.GenderDTO
@@ -36,7 +39,8 @@ fun CharacterDTO.toLocal() = CharacterEntity(
     gender = gender.toDomain(),
     origin = origin.name,
     location = location.name,
-    image = image
+    image = image,
+    episode = episode.map { it.getEpisodeId() }
 )
 
 fun CharacterEntity.toDomain() = Character(
@@ -48,7 +52,8 @@ fun CharacterEntity.toDomain() = Character(
     origin = CharacterLocation(0, origin),
     location = CharacterLocation(0, location),
     image = image,
-    url = ""
+    url = "",
+    episode = episode
 )
 fun CharacterDTO.toDomain() = Character(
     id = id,
@@ -57,9 +62,10 @@ fun CharacterDTO.toDomain() = Character(
     species = species,
     gender = gender.toDomain(),
     origin = origin.toDomain(),
-    location = origin.toDomain(),
+    location = location.toDomain(),
     image = image,
-    url = url
+    url = url,
+    episode = episode.map { it.getEpisodeId() }
 )
 
 fun LocationDTO.toDomain() = CharacterLocation(
@@ -83,13 +89,3 @@ fun GenderDTO.toDomain(): CharacterGender {
         GenderDTO.UNKNOWN -> CharacterGender.UNKNOWN
     }
 }
-
-
-fun String.getIdFromLocationUrl(): Int = if (isNotEmpty()) substringAfterLast('/').toInt() else -1
-
-fun String.getPageNumberFromUrl(): Int? =
-    Regex("page=(\\d+)")
-        .find(this)
-        ?.groupValues
-        ?.getOrNull(1)
-        ?.toIntOrNull()

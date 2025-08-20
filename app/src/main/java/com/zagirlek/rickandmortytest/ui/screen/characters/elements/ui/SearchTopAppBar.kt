@@ -1,11 +1,8 @@
-package com.zagirlek.rickandmortytest.ui.screen.characters.elements
+package com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -14,13 +11,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
@@ -37,26 +30,25 @@ import com.zagirlek.rickandmortytest.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTopAppBar(
-    onSearch: (String) -> Unit = {},
+    query: String?,
+    onSearch: (String?) -> Unit = {},
     onFilter: () -> Unit = {},
     scrollBehavior: TopAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(),
     modifier: Modifier = Modifier
 ) {
     var isOnSearch by remember { mutableStateOf(false) }
-    var searchValue by remember { mutableStateOf("") }
 
     TopAppBar(
         title = {
             if (isOnSearch)
                 OutlinedTextField(
-                    value = searchValue,
+                    value = query.orEmpty(),
                     onValueChange = {
-                        searchValue = it
                         onSearch(it)
                     },
                     singleLine = true,
                     label = {
-                        Text("Введите имя...")
+                        Text("Имя...")
                     },
                     shape = RoundedCornerShape(16.dp),
                     modifier = Modifier
@@ -64,9 +56,8 @@ fun SearchTopAppBar(
                         .padding(horizontal = 4.dp),
                     trailingIcon = {
                         IconButton(
-                            onClick ={
-                                searchValue = ""
-                                onSearch(searchValue)
+                            onClick = {
+                                onSearch(null)
                             }
                         ) {
                             Icon(imageVector = Icons.Default.Clear, contentDescription = "")
@@ -104,7 +95,7 @@ fun SearchTopAppBar(
             if(isOnSearch)
                 IconButton(
                     onClick ={
-                        searchValue = ""
+                        onSearch(null)
                         isOnSearch = false
                     }
                 ) {
@@ -113,7 +104,7 @@ fun SearchTopAppBar(
 
         },
         scrollBehavior = scrollBehavior,
-        modifier = modifier,
+        modifier = modifier
     )
 }
 
@@ -125,5 +116,5 @@ fun SearchTopAppBar(
 )
 @Composable
 fun SearchTopAppBarPreview(modifier: Modifier = Modifier) {
-    SearchTopAppBar()
+
 }

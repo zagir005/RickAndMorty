@@ -1,15 +1,14 @@
 package com.zagirlek.rickandmortytest.data.repository
 
-import android.util.Log
 import com.zagirlek.rickandmortytest.data.mapper.toDomain
 import com.zagirlek.rickandmortytest.data.network.service.CharacterService
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharactersPage
-import com.zagirlek.rickandmortytest.domain.repository.CharacterRepository
+import com.zagirlek.rickandmortytest.domain.repository.RemoteCharacterRepository
 
-class CharacterRepositoryImpl(
+class RemoteCharacterRepositoryImpl(
     private val characterService: CharacterService
-): CharacterRepository {
+): RemoteCharacterRepository {
 
     override suspend fun getFilterCharacters(
         name: String?,

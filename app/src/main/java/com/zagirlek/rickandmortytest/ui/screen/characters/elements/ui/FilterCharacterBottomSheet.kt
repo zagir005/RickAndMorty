@@ -1,4 +1,4 @@
-package com.zagirlek.rickandmortytest.ui.screen.characters.elements
+package com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -52,18 +52,6 @@ fun FilterCharacterBottomSheet(
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            TextField(
-                value = currFiltersState.name ?: "",
-                onValueChange = {
-                    currFiltersState = currFiltersState.copy(name = it)
-                },
-                label = {
-                    Text(text = "Name")
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-
             TextField(
                 value = currFiltersState.species ?: "",
                 onValueChange = {

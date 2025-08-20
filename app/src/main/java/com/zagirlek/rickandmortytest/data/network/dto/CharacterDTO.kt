@@ -11,6 +11,7 @@ data class CharacterDTO(
     @SerializedName("gender") val gender: GenderDTO,
     @SerializedName("origin") val origin: LocationDTO,
     @SerializedName("location") val location: LocationDTO,
+    @SerializedName("episode") val episode: List<String>,
     @SerializedName("image") val image: String,
     @SerializedName("url") val url: String
 )

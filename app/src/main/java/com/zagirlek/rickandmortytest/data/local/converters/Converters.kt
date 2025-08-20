@@ -42,4 +42,14 @@ class Converters {
     }
 
 
+    @TypeConverter
+    fun fromEpisodeIds(value: List<Int>): String = value.joinToString(",")
+
+    @TypeConverter
+    fun toEpisodeIds(value: String): List<Int> = if (value.isEmpty())
+        emptyList()
+    else
+        value.split(",").map { it.toInt() }
+
+
 }

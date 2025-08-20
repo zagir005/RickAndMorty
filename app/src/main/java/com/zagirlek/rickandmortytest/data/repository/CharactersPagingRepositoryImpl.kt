@@ -28,7 +28,7 @@ class CharactersPagingRepositoryImpl(
         return Pager(
             config = PagingConfig(
                 pageSize = 20,
-                enablePlaceholders = false,
+                enablePlaceholders = true,
                 initialLoadSize = 20
             ),
             remoteMediator = CharacterRemoteMediator(

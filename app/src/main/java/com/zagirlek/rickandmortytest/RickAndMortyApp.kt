@@ -4,10 +4,12 @@ import android.app.Application
 import androidx.room.Room
 import com.zagirlek.rickandmortytest.data.local.CharacterDatabase
 import com.zagirlek.rickandmortytest.data.network.retrofit.RickAndMortyRetrofit
-import com.zagirlek.rickandmortytest.data.repository.CharacterRepositoryImpl
+import com.zagirlek.rickandmortytest.data.repository.RemoteCharacterRepositoryImpl
 import com.zagirlek.rickandmortytest.data.repository.CharactersPagingRepositoryImpl
-import com.zagirlek.rickandmortytest.domain.repository.CharacterRepository
+import com.zagirlek.rickandmortytest.data.repository.LocalCharacterRepositoryImpl
+import com.zagirlek.rickandmortytest.domain.repository.RemoteCharacterRepository
 import com.zagirlek.rickandmortytest.domain.repository.CharactersPagingRepository
+import com.zagirlek.rickandmortytest.domain.repository.LocalCharacterRepository
 
 class RickAndMortyApp: Application() {
     lateinit var characterDatabase: CharacterDatabase
@@ -25,9 +27,9 @@ class RickAndMortyApp: Application() {
             .build()
     }
 
-    val characterRepository: CharacterRepository by lazy {
-        CharacterRepositoryImpl(
-            characterService = RickAndMortyRetrofit.provideCharacterService()
+    val localCharacterRepository: LocalCharacterRepository by lazy {
+        LocalCharacterRepositoryImpl(
+            characterDatabase
         )
     }
 

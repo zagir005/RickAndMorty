@@ -1,7 +1,5 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters
 
-import android.transition.CircularPropagation
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,34 +7,21 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -48,23 +33,29 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.zagirlek.rickandmortytest.domain.model.Character
-import com.zagirlek.rickandmortytest.ui.screen.characters.elements.CharacterCard
-import com.zagirlek.rickandmortytest.ui.screen.characters.elements.FilterCharacterBottomSheet
-import com.zagirlek.rickandmortytest.ui.screen.characters.elements.SearchTopAppBar
-import com.zagirlek.rickandmortytest.ui.screen.characters.model.CharactersAction
-import kotlinx.coroutines.launch
+import com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui.CharacterCard
+import com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui.FilterCharacterBottomSheet
+import com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui.SearchTopAppBar
+import com.zagirlek.rickandmortytest.ui.screen.characters.vm.CharactersListAction
+import com.zagirlek.rickandmortytest.ui.screen.characters.vm.CharactersViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharactersListScreen(
+fun CharactersListUi(
     modifier: Modifier = Modifier,
     searchTopAppBar: ( @Composable () -> Unit ) -> Unit = {},
     toDetails: (id: Int) -> Unit = {},
-    viewModel: CharactersViewModel = viewModel(factory = CharactersViewModel.getCharacterViewModel()),
+    viewModel: CharactersViewModel = viewModel(factory = CharactersViewModel.viewModelFactory()),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val characterGridItems = uiState.charactersPagingItems.collectAsLazyPagingItems()
+    val charactersGridState = rememberLazyGridState()
+
+    val topAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     LaunchedEffect(bottomSheetState) {
         if (uiState.isFilterSheetShown)
             bottomSheetState.show()
@@ -72,18 +63,14 @@ fun CharactersListScreen(
             bottomSheetState.hide()
     }
 
-    val characterGridItems = uiState.charactersPagingItems.collectAsLazyPagingItems()
-    val charactersGridState = rememberLazyGridState()
-
-    val topAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-
     searchTopAppBar {
         SearchTopAppBar(
+            query = uiState.search,
             onSearch = {
-                viewModel.action(CharactersAction.SearchByName(name = it))
+                viewModel.action(CharactersListAction.Search(name = it.orEmpty()))
             },
             onFilter = {
-                viewModel.action(CharactersAction.ShowFilterBottomSheet)
+                viewModel.action(CharactersListAction.ShowFilterBottomSheet)
             },
             scrollBehavior = topAppBarScrollBehavior,
             modifier = Modifier
@@ -95,10 +82,10 @@ fun CharactersListScreen(
         FilterCharacterBottomSheet(
             currFilters = uiState.characterFilters,
             onDismiss = {
-                viewModel.action(CharactersAction.HideFilterBottomSheet)
+                viewModel.action(CharactersListAction.HideFilterBottomSheet)
             },
             onFilter = {
-                viewModel.action(CharactersAction.LoadCharacters(filter = it))
+                viewModel.action(CharactersListAction.LoadFilterCharactersList(filter = it))
             },
             bottomSheetState = bottomSheetState
         )
@@ -117,8 +104,8 @@ fun CharactersListScreen(
         ) {
             PaginatedCharactersList(
                 characterList = characterGridItems,
-                onCharacterClick = {
-
+                onCharacterClick = { id ->
+                    toDetails(id)
                 },
                 modifier = Modifier
                     .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
@@ -196,7 +183,9 @@ fun ErrorRetryAlert(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         Text(text = message)
         Button(

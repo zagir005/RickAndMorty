@@ -9,10 +9,9 @@ import androidx.room.withTransaction
 import com.zagirlek.rickandmortytest.data.local.CharacterDatabase
 import com.zagirlek.rickandmortytest.data.local.entities.CharacterEntity
 import com.zagirlek.rickandmortytest.data.local.entities.RemoteKeyEntity
-import com.zagirlek.rickandmortytest.data.mapper.getPageNumberFromUrl
+import com.zagirlek.rickandmortytest.data.mapper.ext.getPageNumberFromUrl
 import com.zagirlek.rickandmortytest.data.mapper.toLocal
 import com.zagirlek.rickandmortytest.data.network.service.CharacterService
-import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import kotlinx.coroutines.delay
 import okio.IOException

@@ -36,6 +36,21 @@ interface CharacterDao {
     ): PagingSource<Int, CharacterEntity>
 
     @Query("""
+       SELECT * FROM characters
+        WHERE (:name IS NULL OR name LIKE '%' || :name || '%')
+          AND (:status IS NULL OR status = :status)
+          AND (:species IS NULL OR species LIKE '%' || :species || '%')
+          AND (:gender IS NULL OR gender = :gender)
+        ORDER BY id ASC
+    """)
+    fun getCharacters(
+        name: String? = null,
+        status: CharacterStatus? = null,
+        species: String? = null,
+        gender: CharacterGender? = null,
+    ): List<CharacterEntity>
+
+    @Query("""
         DELETE FROM characters
         WHERE (:name IS NULL OR name LIKE '%' || :name || '%')
           AND (:status IS NULL OR status = :status)
