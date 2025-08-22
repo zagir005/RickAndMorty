@@ -41,9 +41,7 @@ import com.zagirlek.rickandmortytest.ui.screen.characters.ui.SearchTopAppBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersListUi(
-    modifier: Modifier = Modifier,
     searchTopAppBar: ( @Composable () -> Unit ) -> Unit = {},
-    toDetails: (id: Int) -> Unit = {},
     component: CharactersList,
 ) {
     val uiState by component.state.subscribeAsState()
@@ -104,7 +102,7 @@ fun CharactersListUi(
             PaginatedCharactersList(
                 characterList = characterGridItems,
                 onCharacterClick = { id ->
-                    toDetails(id)
+                    component.action(CharactersListAction.ItemClick(id))
                 },
                 modifier = Modifier
                     .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),

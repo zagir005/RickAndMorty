@@ -1,7 +1,6 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters.cmp.state
 
 import com.zagirlek.rickandmortytest.core.cmp.Action
-import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 
 sealed class CharactersListAction: Action {
@@ -13,7 +12,7 @@ sealed class CharactersListAction: Action {
 
     object ResetFilter: CharactersListAction()
 
-    data class ItemClick(val character: Character): CharactersListAction()
+    data class ItemClick(val characterId: Int): CharactersListAction()
 
     data class Search(val name: String): CharactersListAction()
 

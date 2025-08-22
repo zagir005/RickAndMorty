@@ -66,7 +66,7 @@ class CharactersList(
             }
 
             is CharactersListAction.ItemClick -> {
-                onItemSelected(action.character.id)
+                onItemSelected(action.characterId)
             }
 
             CharactersListAction.ResetFilter -> {

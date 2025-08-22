@@ -14,7 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,12 +32,10 @@ import com.zagirlek.rickandmortytest.ui.elements.GenderText
 import com.zagirlek.rickandmortytest.ui.elements.SpeciesText
 import com.zagirlek.rickandmortytest.ui.screen.details.cmp.CharacterDetails
 import com.zagirlek.rickandmortytest.ui.screen.details.ui.CharacterInfoCard
-import com.zagirlek.rickandmortytest.ui.screen.details.ui.NameTopAppBar
 
 @Composable
 fun CharacterDetailsUi(
-    backToMain: () -> Unit,
-    topAppBar: (@Composable () -> Unit) -> Unit,
+    topAppBar: (@Composable () -> Unit) -> Unit = {},
     characterDetailsComponent: CharacterDetails
 ) {
     val state by characterDetailsComponent.state.subscribeAsState()
