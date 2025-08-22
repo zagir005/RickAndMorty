@@ -4,27 +4,25 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.navigation.NavHost
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.findNavController
-import androidx.paging.PagingSource
-import com.zagirlek.rickandmortytest.domain.model.Character
+import com.arkivanov.decompose.defaultComponentContext
+import com.zagirlek.rickandmortytest.ui.screen.root.Root
+import com.zagirlek.rickandmortytest.ui.screen.root.RootContent
 import com.zagirlek.rickandmortytest.ui.theme.RickAndMortyTestTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val root = Root(
+            defaultComponentContext(),
+            application as RickAndMortyApp
+        )
         setContent {
-            RickAndMortyTestTheme(
-                darkTheme = false
-            ) {
-                val navController = rememberNavController()
-
-
-                AppUi(navController)
-
+            RickAndMortyTestTheme{
+                RootContent(
+                    root
+                )
             }
         }
     }

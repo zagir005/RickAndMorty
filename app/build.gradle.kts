@@ -43,20 +43,25 @@ android {
 
 dependencies {
     implementation(libs.kotlin.serializatoin)
+
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.paging)
-    implementation(libs.androidx.navigation.common.android)
-    implementation(libs.androidx.navigation.compose.android)
+
+    ksp(libs.androidx.room.ksp)
+
+    implementation(libs.coil.compose)
+
+    implementation(libs.coil.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
-    ksp(libs.androidx.room.ksp)
-    implementation(libs.coil.okhttp)
-    implementation(libs.coil.compose)
-    implementation(libs.okhttp.logging.interceptor)
+
     implementation(libs.paging.compose)
     implementation(libs.paging.common)
-    implementation(libs.shimmer)
+
+    implementation(libs.decompose)
+    implementation(libs.decompose.compose.extension)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
