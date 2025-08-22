@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.zagirlek.rickandmortytest.RickAndMortyApp
-import com.zagirlek.rickandmortytest.core.vm.BaseViewModel
+import com.zagirlek.rickandmortytest.core.cmp.BaseViewModel
 import com.zagirlek.rickandmortytest.domain.repository.CharactersPagingRepository
 import com.zagirlek.rickandmortytest.ui.screen.characters.elements.state.CharactersState
 import com.zagirlek.rickandmortytest.ui.screen.characters.vm.reducer.CharactersListMutation

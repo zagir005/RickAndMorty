@@ -1,4 +1,4 @@
-package com.zagirlek.rickandmortytest.ui.screen.details.elements.ui
+package com.zagirlek.rickandmortytest.ui.screen.details.ui
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack

@@ -1,6 +1,6 @@
-package com.zagirlek.rickandmortytest.ui.screen.details.elements.state
+package com.zagirlek.rickandmortytest.ui.screen.details.cmp.state
 
-import com.zagirlek.rickandmortytest.core.vm.ViewState
+import com.zagirlek.rickandmortytest.core.cmp.ViewState
 import com.zagirlek.rickandmortytest.domain.model.Character
 
 data class CharacterDetailsState(

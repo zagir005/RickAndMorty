@@ -1,6 +1,6 @@
-package com.zagirlek.rickandmortytest.ui.screen.details.vm.reducer
+package com.zagirlek.rickandmortytest.ui.screen.details.cmp.reducer
 
-import com.zagirlek.rickandmortytest.core.vm.reducer.Mutation
+import com.zagirlek.rickandmortytest.core.cmp.reducer.Mutation
 import com.zagirlek.rickandmortytest.domain.model.Character
 
 sealed class CharacterDetailsMutation: Mutation{

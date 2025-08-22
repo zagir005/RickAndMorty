@@ -1,7 +1,7 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters.elements.state
 
 import androidx.paging.PagingData
-import com.zagirlek.rickandmortytest.core.vm.ViewState
+import com.zagirlek.rickandmortytest.core.cmp.ViewState
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import kotlinx.coroutines.flow.Flow

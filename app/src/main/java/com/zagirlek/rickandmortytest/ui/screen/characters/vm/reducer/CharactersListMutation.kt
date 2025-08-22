@@ -1,7 +1,7 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters.vm.reducer
 
 import androidx.paging.PagingData
-import com.zagirlek.rickandmortytest.core.vm.reducer.Mutation
+import com.zagirlek.rickandmortytest.core.cmp.reducer.Mutation
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import kotlinx.coroutines.flow.Flow

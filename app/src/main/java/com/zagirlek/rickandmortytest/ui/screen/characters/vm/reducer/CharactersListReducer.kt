@@ -1,6 +1,6 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters.vm.reducer
 
-import com.zagirlek.rickandmortytest.core.vm.reducer.Reducer
+import com.zagirlek.rickandmortytest.core.cmp.reducer.Reducer
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 import com.zagirlek.rickandmortytest.ui.screen.characters.elements.state.CharactersState
 

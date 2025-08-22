@@ -1,7 +1,7 @@
-package com.zagirlek.rickandmortytest.ui.screen.details.vm.reducer
+package com.zagirlek.rickandmortytest.ui.screen.details.cmp.reducer
 
-import com.zagirlek.rickandmortytest.core.vm.reducer.Reducer
-import com.zagirlek.rickandmortytest.ui.screen.details.elements.state.CharacterDetailsState
+import com.zagirlek.rickandmortytest.core.cmp.reducer.Reducer
+import com.zagirlek.rickandmortytest.ui.screen.details.cmp.state.CharacterDetailsState
 
 class CharacterDetailsReducer: Reducer<CharacterDetailsState, CharacterDetailsMutation> {
 
