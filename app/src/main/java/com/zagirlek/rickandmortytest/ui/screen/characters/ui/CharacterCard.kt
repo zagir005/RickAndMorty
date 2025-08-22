@@ -1,4 +1,4 @@
-package com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui
+package com.zagirlek.rickandmortytest.ui.screen.characters.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,9 +22,6 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.zagirlek.rickandmortytest.R
 import com.zagirlek.rickandmortytest.domain.model.Character
-import com.zagirlek.rickandmortytest.domain.model.CharacterGender
-import com.zagirlek.rickandmortytest.domain.model.CharacterLocation
-import com.zagirlek.rickandmortytest.domain.model.CharacterStatus
 import com.zagirlek.rickandmortytest.ui.theme.Gray
 import com.zagirlek.rickandmortytest.ui.theme.White
 import com.zagirlek.rickandmortytest.ui.theme.WhiteGray

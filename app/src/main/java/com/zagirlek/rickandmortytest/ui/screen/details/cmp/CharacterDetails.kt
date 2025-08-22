@@ -11,22 +11,17 @@ import com.zagirlek.rickandmortytest.ui.screen.details.cmp.state.CharacterDetail
 import com.zagirlek.rickandmortytest.ui.screen.details.cmp.state.CharacterDetailsState
 import kotlinx.coroutines.launch
 
-interface CharacterDetails{
-    val state: Value<CharacterDetailsState>
-
-}
-
-class DefaultCharacterDetails(
+class CharacterDetails(
     componentContext: ComponentContext,
     private val getSingleCharacterUseCase: GetSingleCharacterUseCase,
     private val characterId: Int
-): CharacterDetails, BaseComponent<CharacterDetailsState, CharacterDetailsMutation, CharacterDetailsAction, CharacterDetailsReducer>(
+): BaseComponent<CharacterDetailsState, CharacterDetailsMutation, CharacterDetailsAction, CharacterDetailsReducer>(
         reducer = CharacterDetailsReducer(), componentContext = componentContext)
 {
     private val _state: MutableValue<CharacterDetailsState> =
         MutableValue(initialValue = CharacterDetailsState())
 
-    override val state: Value<CharacterDetailsState> = _state
+    val state: Value<CharacterDetailsState> = _state
 
     init {
         action(CharacterDetailsAction.FetchData(characterId))

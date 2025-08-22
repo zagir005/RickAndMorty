@@ -20,24 +20,23 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.zagirlek.rickandmortytest.domain.model.Character
-import com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui.CharacterCard
-import com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui.FilterCharacterBottomSheet
-import com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui.SearchTopAppBar
-import com.zagirlek.rickandmortytest.ui.screen.characters.vm.CharactersListAction
-import com.zagirlek.rickandmortytest.ui.screen.characters.vm.CharactersViewModel
+import com.zagirlek.rickandmortytest.ui.screen.characters.cmp.CharactersList
+import com.zagirlek.rickandmortytest.ui.screen.characters.cmp.state.CharactersListAction
+import com.zagirlek.rickandmortytest.ui.screen.characters.ui.CharacterCard
+import com.zagirlek.rickandmortytest.ui.screen.characters.ui.FilterCharacterBottomSheet
+import com.zagirlek.rickandmortytest.ui.screen.characters.ui.SearchTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,9 +44,9 @@ fun CharactersListUi(
     modifier: Modifier = Modifier,
     searchTopAppBar: ( @Composable () -> Unit ) -> Unit = {},
     toDetails: (id: Int) -> Unit = {},
-    viewModel: CharactersViewModel = viewModel(factory = CharactersViewModel.viewModelFactory()),
+    component: CharactersList,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by component.state.subscribeAsState()
 
     val bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -67,10 +66,10 @@ fun CharactersListUi(
         SearchTopAppBar(
             query = uiState.search,
             onSearch = {
-                viewModel.action(CharactersListAction.Search(name = it.orEmpty()))
+                component.action(CharactersListAction.Search(name = it.orEmpty()))
             },
             onFilter = {
-                viewModel.action(CharactersListAction.ShowFilterBottomSheet)
+                component.action(CharactersListAction.ShowFilterBottomSheet)
             },
             scrollBehavior = topAppBarScrollBehavior,
             modifier = Modifier
@@ -82,10 +81,10 @@ fun CharactersListUi(
         FilterCharacterBottomSheet(
             currFilters = uiState.characterFilters,
             onDismiss = {
-                viewModel.action(CharactersListAction.HideFilterBottomSheet)
+                component.action(CharactersListAction.HideFilterBottomSheet)
             },
             onFilter = {
-                viewModel.action(CharactersListAction.LoadFilterCharactersList(filter = it))
+                component.action(CharactersListAction.LoadFilterCharactersList(filter = it))
             },
             bottomSheetState = bottomSheetState
         )

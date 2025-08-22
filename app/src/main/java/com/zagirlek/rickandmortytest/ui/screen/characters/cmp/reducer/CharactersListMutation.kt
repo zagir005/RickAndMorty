@@ -1,4 +1,4 @@
-package com.zagirlek.rickandmortytest.ui.screen.characters.vm.reducer
+package com.zagirlek.rickandmortytest.ui.screen.characters.cmp.reducer
 
 import androidx.paging.PagingData
 import com.zagirlek.rickandmortytest.core.cmp.reducer.Mutation

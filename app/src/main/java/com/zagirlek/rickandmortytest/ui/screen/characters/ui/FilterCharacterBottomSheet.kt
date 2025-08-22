@@ -1,4 +1,4 @@
-package com.zagirlek.rickandmortytest.ui.screen.characters.elements.ui
+package com.zagirlek.rickandmortytest.ui.screen.characters.ui
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource

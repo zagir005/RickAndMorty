@@ -1,9 +1,10 @@
-package com.zagirlek.rickandmortytest.ui.screen.characters.vm
+package com.zagirlek.rickandmortytest.ui.screen.characters.cmp.state
 
+import com.zagirlek.rickandmortytest.core.cmp.Action
 import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
 
-sealed class CharactersListAction {
+sealed class CharactersListAction: Action {
     data class LoadFilterCharactersList(val filter: CharacterFilters = CharacterFilters()): CharactersListAction()
 
     object HideFilterBottomSheet: CharactersListAction()

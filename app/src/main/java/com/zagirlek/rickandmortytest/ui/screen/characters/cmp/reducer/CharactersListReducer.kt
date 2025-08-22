@@ -1,11 +1,11 @@
-package com.zagirlek.rickandmortytest.ui.screen.characters.vm.reducer
+package com.zagirlek.rickandmortytest.ui.screen.characters.cmp.reducer
 
 import com.zagirlek.rickandmortytest.core.cmp.reducer.Reducer
 import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
-import com.zagirlek.rickandmortytest.ui.screen.characters.elements.state.CharactersState
+import com.zagirlek.rickandmortytest.ui.screen.characters.cmp.state.CharactersListState
 
-class CharactersListReducer: Reducer<CharactersState, CharactersListMutation> {
-    override fun reduce(currentState: CharactersState, mutation: CharactersListMutation): CharactersState {
+class CharactersListReducer: Reducer<CharactersListState, CharactersListMutation> {
+    override fun reduce(currentState: CharactersListState, mutation: CharactersListMutation): CharactersListState {
         return when(mutation){
             is CharactersListMutation.CharactersListByEmptySearch -> currentState.copy(
                 charactersPagingItems = mutation.characters,
