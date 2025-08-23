@@ -1,5 +1,6 @@
 package com.zagirlek.rickandmortytest.ui.screen.root
 
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
@@ -24,5 +25,4 @@ fun RootContent(rootComponent: RootComponent) {
             )
         }
     }
-
 }

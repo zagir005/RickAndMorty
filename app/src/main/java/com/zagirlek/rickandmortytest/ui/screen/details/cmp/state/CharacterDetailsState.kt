@@ -7,6 +7,4 @@ data class CharacterDetailsState(
     val character: Character = Character.emptyCharacter(),
     val loading: Boolean = false,
     val onError: Boolean = false
-): ViewState{
-
-}
+): ViewState

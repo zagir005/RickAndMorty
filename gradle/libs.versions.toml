@@ -37,7 +37,7 @@ coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", versio
 
 decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose"}
 decompose_compose_extension = { group = "com.arkivanov.decompose", name = "extensions-compose", version.ref = "decompose"}
-
+essenty_coroutines = { group = "com.arkivanov.essenty", name = "lifecycle-coroutines", version = "2.5.0"}
 
 paging-common = { group = "androidx.paging", name = "paging-common", version.ref = "paging"}
 paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging"}

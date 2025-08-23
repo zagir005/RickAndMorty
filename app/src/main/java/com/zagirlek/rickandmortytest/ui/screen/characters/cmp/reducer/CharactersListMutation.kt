@@ -30,5 +30,7 @@ sealed class CharactersListMutation: Mutation {
 
     object HideFilterBottomSheet: CharactersListMutation()
 
+    object OnLoading: CharactersListMutation()
+
 
 }

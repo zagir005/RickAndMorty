@@ -1,5 +1,6 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters.ui
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +13,7 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -110,11 +112,16 @@ fun SearchTopAppBar(
 
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(
-    showBackground = true
+    showSystemUi = true
 )
 @Composable
 fun SearchTopAppBarPreview(modifier: Modifier = Modifier) {
+    Scaffold(
+        topBar = { SearchTopAppBar("") }
+    ) {
 
+    }
 }

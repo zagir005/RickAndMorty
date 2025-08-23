@@ -9,4 +9,5 @@ sealed class CharacterDetailsMutation: Mutation{
     data class CharacterLoaded(val character: Character): CharacterDetailsMutation()
 
     object CharacterNotFoundError: CharacterDetailsMutation()
+
 }

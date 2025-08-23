@@ -1,5 +1,6 @@
 package com.zagirlek.rickandmortytest.ui.screen.characters
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,9 +15,11 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -41,7 +44,6 @@ import com.zagirlek.rickandmortytest.ui.screen.characters.ui.SearchTopAppBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersListUi(
-    searchTopAppBar: ( @Composable () -> Unit ) -> Unit = {},
     component: CharactersList,
 ) {
     val uiState by component.state.subscribeAsState()
@@ -53,63 +55,71 @@ fun CharactersListUi(
 
     val topAppBarScrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-    LaunchedEffect(bottomSheetState) {
+    LaunchedEffect(null) {
         if (uiState.isFilterSheetShown)
             bottomSheetState.show()
         else
             bottomSheetState.hide()
     }
 
-    searchTopAppBar {
-        SearchTopAppBar(
-            query = uiState.search,
-            onSearch = {
-                component.action(CharactersListAction.Search(name = it.orEmpty()))
-            },
-            onFilter = {
-                component.action(CharactersListAction.ShowFilterBottomSheet)
-            },
-            scrollBehavior = topAppBarScrollBehavior,
-            modifier = Modifier
-                .shadow(6.dp)
-        )
-    }
-
-    if (uiState.isFilterSheetShown){
-        FilterCharacterBottomSheet(
-            currFilters = uiState.characterFilters,
-            onDismiss = {
-                component.action(CharactersListAction.HideFilterBottomSheet)
-            },
-            onFilter = {
-                component.action(CharactersListAction.LoadFilterCharactersList(filter = it))
-            },
-            bottomSheetState = bottomSheetState
-        )
-    }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ){
-        PullToRefresh(
-            isRefreshing = characterGridItems.loadState.refresh is LoadState.Loading,
-            onRefresh = {
-                characterGridItems.refresh()
-            },
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            PaginatedCharactersList(
-                characterList = characterGridItems,
-                onCharacterClick = { id ->
-                    component.action(CharactersListAction.ItemClick(id))
+    Scaffold(
+        topBar = {
+            SearchTopAppBar(
+                query = uiState.search,
+                onSearch = {
+                    component.action(CharactersListAction.Search(name = it.orEmpty()))
                 },
+                onFilter = {
+                    component.action(CharactersListAction.ShowFilterBottomSheet)
+                },
+                scrollBehavior = topAppBarScrollBehavior,
                 modifier = Modifier
-                    .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
-                state = charactersGridState
+                    .shadow(6.dp)
             )
         }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+        ) {
+
+
+
+            if (uiState.isFilterSheetShown){
+                FilterCharacterBottomSheet(
+                    currFilters = uiState.characterFilters,
+                    onDismiss = {
+                        component.action(CharactersListAction.HideFilterBottomSheet)
+                    },
+                    onFilter = {
+                        component.action(CharactersListAction.LoadFilterCharactersList(filter = it))
+                    },
+                    bottomSheetState = bottomSheetState
+                )
+            }
+
+            PullToRefreshBox(
+                isRefreshing = characterGridItems.loadState.refresh is LoadState.Loading,
+                onRefresh = {
+                    characterGridItems.refresh()
+                },
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                PaginatedCharactersList(
+                    characterList = characterGridItems,
+                    onCharacterClick = { id ->
+                        component.action(CharactersListAction.ItemClick(id))
+                    },
+                    modifier = Modifier
+                        .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),
+                    state = charactersGridState
+                )
+            }
+        }
     }
+
+
 }
 
 
@@ -138,11 +148,14 @@ private fun PaginatedCharactersList(
             count = characterList.itemCount,
             key = characterList.itemKey { it.id }
         ) { index ->
-            CharacterCard(
-                character = characterList[index]!!
-            ) {
-                onCharacterClick(characterList[index]?.id ?: 1)
-            }
+            val character = characterList[index]
+
+            if (character != null)
+                CharacterCard(
+                    character = character
+                ) {
+                    onCharacterClick(characterList[index]?.id ?: 1)
+                }
         }
 
         item(
@@ -192,23 +205,5 @@ fun ErrorRetryAlert(
         ) {
             Text(text = "Попытаться снова")
         }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun PullToRefresh(
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    PullToRefreshBox(
-        isRefreshing = isRefreshing,
-        onRefresh = onRefresh,
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        content()
     }
 }

@@ -1,14 +1,16 @@
 package com.zagirlek.rickandmortytest.ui.screen.details
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -17,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,95 +34,113 @@ import com.zagirlek.rickandmortytest.domain.model.CharacterStatus
 import com.zagirlek.rickandmortytest.ui.elements.GenderText
 import com.zagirlek.rickandmortytest.ui.elements.SpeciesText
 import com.zagirlek.rickandmortytest.ui.screen.details.cmp.CharacterDetails
+import com.zagirlek.rickandmortytest.ui.screen.details.cmp.state.CharacterDetailsAction
 import com.zagirlek.rickandmortytest.ui.screen.details.ui.CharacterInfoCard
+import com.zagirlek.rickandmortytest.ui.screen.details.ui.NameTopAppBar
 
 @Composable
 fun CharacterDetailsUi(
-    topAppBar: (@Composable () -> Unit) -> Unit = {},
     characterDetailsComponent: CharacterDetails
 ) {
     val state by characterDetailsComponent.state.subscribeAsState()
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ){
-        if (state.loading)
-            CircularProgressIndicator()
-        else if (state.onError)
-            Text("Error!")
-        else
-            DetailsContent(character = state.character)
+    Scaffold(
+        topBar = {
+            NameTopAppBar(
+                name = state.character.name
+            ) {
+                characterDetailsComponent.action(CharacterDetailsAction.BackToList)
+            }
+        }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.Center
+        ){
+            if (state.loading)
+                CircularProgressIndicator()
+            else if (state.onError)
+                Text("Error!")
+            else
+                DetailsContent(character = state.character)
+        }
     }
+
 }
 
 @Composable
 private fun DetailsContent(
-    character: Character,
-    modifier: Modifier = Modifier
+    character: Character
 ) {
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .scrollable(state = rememberScrollState(), orientation = Orientation.Vertical),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         AsyncImage(
             model = character.image,
             contentDescription = "Image",
             placeholder = painterResource(id = R.drawable.ic_launcher_background),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-        )
+                .padding(horizontal = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Text(
+                text = character.name,
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
 
-        Text(
-            text = character.name,
-            style = MaterialTheme.typography.titleLarge,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-        )
 
+            GenderText(
+                gender = character.gender
+            )
 
-        GenderText(
-            gender = character.gender
-        )
+            SpeciesText(
+                species = character.species
+            )
 
-        SpeciesText(
-            species = character.species
-        )
+            CharacterInfoCard(
+                icon = painterResource(R.drawable.planet_24),
+                title = "Origin location",
+                body = character.origin.name
+            )
+            CharacterInfoCard(
+                icon = painterResource(R.drawable.location_on_24),
+                title = "Last known location",
+                body = character.location.name
+            )
 
-        CharacterInfoCard(
-            icon = painterResource(R.drawable.planet_24),
-            title = "Origin location",
-            body = character.origin.name
-        )
-        CharacterInfoCard(
-            icon = painterResource(R.drawable.location_on_24),
-            title = "Last known location",
-            body = character.location.name
-        )
-
-        Text(
-            text = "Episodes ${character.episode.size}",
-            style = MaterialTheme.typography.titleMedium
-        )
-        character.episode.forEach {
-            Text(text = "Episode $it")
+            Text(
+                text = "Episodes ${character.episode.size}",
+                style = MaterialTheme.typography.titleMedium
+            )
+            character.episode.forEach {
+                Text(text = "Episode $it")
+            }
         }
+
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Preview(
     showSystemUi = true
 )
 @Composable
 fun CharacterDetailsPreview(modifier: Modifier = Modifier) {
-    Scaffold { paddingValues ->
+    Scaffold {
         DetailsContent(
             character = Character(
                 id = 0,
-                name = "Zagir Gadjimirzoev Ants On Eyes Yuzbegovich",
+                name = "Zagir Gadjimirzoev Yuzbegovich",
                 status = CharacterStatus.ALIVE,
                 species = "Human",
                 gender = CharacterGender.MALE,
@@ -128,9 +149,7 @@ fun CharacterDetailsPreview(modifier: Modifier = Modifier) {
                 image = "",
                 url = "",
                 episode = List(10){ it }
-            ),
-            modifier = Modifier
-                .padding(paddingValues)
+            )
         )
     }
 }

@@ -4,8 +4,10 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.zagirlek.rickandmortytest.core.cmp.BaseComponent
+import com.zagirlek.rickandmortytest.domain.model.Character
 import com.zagirlek.rickandmortytest.domain.usecase.GetSingleCharacterUseCase
 import com.zagirlek.rickandmortytest.ui.screen.details.cmp.reducer.CharacterDetailsMutation
+import com.zagirlek.rickandmortytest.ui.screen.details.cmp.reducer.CharacterDetailsMutation.*
 import com.zagirlek.rickandmortytest.ui.screen.details.cmp.reducer.CharacterDetailsReducer
 import com.zagirlek.rickandmortytest.ui.screen.details.cmp.state.CharacterDetailsAction
 import com.zagirlek.rickandmortytest.ui.screen.details.cmp.state.CharacterDetailsState
@@ -14,7 +16,8 @@ import kotlinx.coroutines.launch
 class CharacterDetails(
     componentContext: ComponentContext,
     private val getSingleCharacterUseCase: GetSingleCharacterUseCase,
-    private val characterId: Int
+    private val characterId: Int,
+    private val onBack: () -> Unit
 ): BaseComponent<CharacterDetailsState, CharacterDetailsMutation, CharacterDetailsAction, CharacterDetailsReducer>(
         reducer = CharacterDetailsReducer(), componentContext = componentContext)
 {
@@ -37,9 +40,13 @@ class CharacterDetails(
                     if (character == null)
                         CharacterDetailsMutation.CharacterNotFoundError.reduce(_state)
                     else
-                        CharacterDetailsMutation.CharacterLoaded(character).reduce(_state)
+                        CharacterLoaded(character).reduce(_state)
                 }
+            }
+            CharacterDetailsAction.BackToList -> {
+                onBack()
             }
         }
     }
+
 }

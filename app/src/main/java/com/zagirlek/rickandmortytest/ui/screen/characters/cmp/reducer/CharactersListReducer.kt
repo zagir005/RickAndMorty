@@ -9,26 +9,36 @@ class CharactersListReducer: Reducer<CharactersListState, CharactersListMutation
         return when(mutation){
             is CharactersListMutation.CharactersListByEmptySearch -> currentState.copy(
                 charactersPagingItems = mutation.characters,
-                search = null
+                search = null,
+                loading = false
             )
             is CharactersListMutation.CharactersListBySearch -> currentState.copy(
                 charactersPagingItems = mutation.characters,
-                search = mutation.query
+                search = mutation.query,
+                loading = false
             )
             CharactersListMutation.HideFilterBottomSheet -> currentState.copy(
-                isFilterSheetShown = false
+                isFilterSheetShown = false,
+                loading = false
             )
             CharactersListMutation.ShowFilterBottomSheet -> currentState.copy(
-                isFilterSheetShown = true
+                isFilterSheetShown = true,
+                loading = false
             )
             is CharactersListMutation.LoadCharactersList -> currentState.copy(
                 charactersPagingItems = mutation.characters,
                 isFilterSheetShown = false,
-                characterFilters = mutation.filter
+                characterFilters = mutation.filter,
+                loading = false
             )
             is CharactersListMutation.ResetFilterCharactersList -> currentState.copy(
                 charactersPagingItems = mutation.characters,
-                characterFilters = CharacterFilters()
+                characterFilters = CharacterFilters(),
+                loading = false
+            )
+
+            CharactersListMutation.OnLoading -> currentState.copy(
+                loading = true
             )
         }
     }

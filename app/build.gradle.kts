@@ -62,6 +62,7 @@ dependencies {
 
     implementation(libs.decompose)
     implementation(libs.decompose.compose.extension)
+    implementation(libs.essenty.coroutines)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

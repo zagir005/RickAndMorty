@@ -46,7 +46,6 @@ fun FilterCharacterBottomSheet(
         onDismissRequest = onDismiss,
         sheetState = bottomSheetState,
     ) {
-
         Column(
             modifier = modifier
                 .padding(8.dp),

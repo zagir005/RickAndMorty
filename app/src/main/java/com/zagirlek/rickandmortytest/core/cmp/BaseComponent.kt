@@ -3,6 +3,7 @@ package com.zagirlek.rickandmortytest.core.cmp
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
+import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.zagirlek.rickandmortytest.core.cmp.reducer.Mutation
 import com.zagirlek.rickandmortytest.core.cmp.reducer.Reducer
@@ -16,7 +17,7 @@ abstract class BaseComponent <VS: ViewState, M: Mutation, A: Action, R: Reducer<
     componentContext: ComponentContext
 ): ComponentContext by componentContext {
 
-    protected val componentScope = CoroutineScope(context = SupervisorJob() + Dispatchers.Main.immediate).also {
+    protected val componentScope = coroutineScope(context = SupervisorJob() + Dispatchers.Main).also {
         doOnDestroy { it.cancel() }
     }
 
