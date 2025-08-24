@@ -1,7 +1,7 @@
 package com.zagirlek.data.repository
 
-import com.zagirlek.data.local.CharacterDatabase
-import com.zagirlek.data.local.entities.CharacterEntity
+import com.zagirlek.core.local.CharacterDatabase
+import com.zagirlek.core.local.entities.CharacterEntity
 import com.zagirlek.core.model.CharacterGender
 import com.zagirlek.core.model.CharacterStatus
 import com.zagirlek.domain.repository.LocalCharacterRepository

@@ -6,8 +6,14 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.zagirlek.core.ext.getPageNumberFromUrl
+import com.zagirlek.core.local.CharacterDatabase
+import com.zagirlek.core.local.dao.CharacterDao
+import com.zagirlek.core.local.dao.RemoteKeyDao
+import com.zagirlek.core.local.entities.CharacterEntity
+import com.zagirlek.core.local.entities.RemoteKeyEntity
 import com.zagirlek.data.mapper.toLocal
 import com.zagirlek.core.model.CharacterFilters
+import com.zagirlek.core.network.service.CharacterService
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import java.io.IOException
@@ -20,9 +26,8 @@ class CharacterRemoteMediator(
     private val network: CharacterService
 ): RemoteMediator<Int, CharacterEntity>() {
 
-    private val remoteKeyDao = database.remoteKeyDao()
-    private val characterDao = database.characterDao()
-
+    private val remoteKeyDao: RemoteKeyDao = database.remoteKeyDao()
+    private val characterDao: CharacterDao = database.characterDao()
 
     override suspend fun load(
         loadType: LoadType,

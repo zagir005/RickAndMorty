@@ -2,23 +2,23 @@ package com.zagirlek.data.di
 
 import com.zagirlek.core.local.CharacterDatabase
 import com.zagirlek.core.network.service.CharacterService
-import com.zagirlek.data.paging.CharacterRemoteMediator
-import com.zagirlek.data.repository.CharactersPagingRepositoryImpl
-import com.zagirlek.domain.repository.CharactersPagingRepository
+import com.zagirlek.data.repository.LocalCharacterRepositoryImpl
+import com.zagirlek.data.repository.RemoteCharacterRepositoryImpl
+import com.zagirlek.domain.repository.LocalCharacterRepository
+import com.zagirlek.domain.repository.RemoteCharacterRepository
 import org.koin.dsl.module
 
 val dataModule = module {
 
-    single<CharactersPagingRepository> {
-        CharactersPagingRepositoryImpl(
-            charactersService = get<CharacterService>(),
-            characterDatabase = get<CharacterDatabase>()
+    single<RemoteCharacterRepository> {
+        RemoteCharacterRepositoryImpl(
+            characterService = get<CharacterService>()
         )
     }
 
-    single<CharacterRemoteMediator> {
-        CharacterRemoteMediator(
-            filters =
+    single<LocalCharacterRepository> {
+        LocalCharacterRepositoryImpl(
+            characterDatabase = get<CharacterDatabase>()
         )
     }
 }

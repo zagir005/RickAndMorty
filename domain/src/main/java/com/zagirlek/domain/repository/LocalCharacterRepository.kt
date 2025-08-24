@@ -1,6 +1,6 @@
 package com.zagirlek.domain.repository
 
-import com.zagirlek.data.local.entities.CharacterEntity
+import com.zagirlek.core.local.entities.CharacterEntity
 import com.zagirlek.core.model.CharacterGender
 import com.zagirlek.core.model.CharacterStatus
 

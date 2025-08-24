@@ -1,9 +1,9 @@
 package com.zagirlek.data.repository
 
 import com.zagirlek.data.mapper.toDomain
-import com.zagirlek.data.network.service.CharacterService
 import com.zagirlek.core.model.Character
 import com.zagirlek.core.model.CharactersPage
+import com.zagirlek.core.network.service.CharacterService
 import com.zagirlek.domain.repository.RemoteCharacterRepository
 
 class RemoteCharacterRepositoryImpl(

@@ -27,8 +27,6 @@ fun CharactersPageDTO.toDomain(): CharactersPage =
     )
 
 fun List<CharacterDTO>.toDomain(): List<Character> = mapIndexed { index, it ->
-    Log.d("LISTTAG", this[index].toString())
-    Log.d("LISTTAG", it.toDomain().toString())
     it.toDomain()
 }
 

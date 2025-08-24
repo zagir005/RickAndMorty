@@ -36,6 +36,10 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":core"))
 
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+
     implementation(libs.paging.common)
     implementation(libs.kotlin.serializatoin)
 
