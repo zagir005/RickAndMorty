@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.ksp)
-    kotlin("plugin.serialization") version "2.1.10"
 }
 
 android {
@@ -42,27 +41,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlin.serializatoin)
+    implementation(project(":core"))
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":presentation"))
 
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
-
-    ksp(libs.androidx.room.ksp)
-
-    implementation(libs.coil.compose)
-
-    implementation(libs.coil.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter.gson)
-
-    implementation(libs.paging.compose)
-    implementation(libs.paging.common)
-
-    implementation(libs.decompose)
-    implementation(libs.decompose.compose.extension)
-    implementation(libs.essenty.coroutines)
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
