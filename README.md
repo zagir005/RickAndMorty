@@ -1,4 +1,4 @@
-# 🚀 Rick and Morty Character Explorer
+# 🚀 Rick and Morty Characters
 
 A pet project to demonstrate Android programming skills. Modern Android app built with Clean Architecture, Jetpack Compose, and Decompose.
 
