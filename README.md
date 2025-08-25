@@ -44,7 +44,7 @@ This project follows **Clean Architecture** principles with a modular structure:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/RickAndMortyTest.git
+   git clone https://github.com/zagir005/RickAndMortyTest.git
    cd RickAndMortyTest
    ```
 
