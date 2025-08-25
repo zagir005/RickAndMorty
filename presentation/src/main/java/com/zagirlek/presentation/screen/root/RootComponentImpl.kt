@@ -8,15 +8,14 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.push
-import com.zagirlek.rickandmortytest.RickAndMortyApp
-import com.zagirlek.rickandmortytest.domain.usecase.GetSingleCharacterUseCase
-import com.zagirlek.rickandmortytest.ui.screen.characters.cmp.CharactersList
-import com.zagirlek.rickandmortytest.ui.screen.details.cmp.CharacterDetails
+import com.zagirlek.presentation.screen.characters.cmp.CharactersListComponent
+import com.zagirlek.presentation.screen.details.cmp.CharacterDetailsComponent
 import kotlinx.serialization.Serializable
 
-class Root(
+class RootComponentImpl(
     componentContext: ComponentContext,
-    private val app: RickAndMortyApp
+    private val characterDetailsComponentFactory: CharacterDetailsComponent.Factory,
+    private val charactersListComponentFactory: CharactersListComponent.Factory
 ): RootComponent, ComponentContext by componentContext {
 
     private val nav = StackNavigation<Config>()
@@ -35,24 +34,21 @@ class Root(
         return when(config){
             Config.CharactersList -> {
                 RootComponent.Child.CharactersListChild(
-                    _root_ide_package_.com.zagirlek.presentation.screen.characters.cmp.CharactersList(
-                        componentContext = component,
-                        charactersPagerRepository = app.charactersPagingRepository,
-                        onItemSelected = {
-                            nav.push(configuration = Config.CharacterDetails(characterId = it))
-                        }
-                    )
+                    charactersListComponent = charactersListComponentFactory(
+                        componentContext = component
+                    ){ id ->
+                        nav.push(
+                            configuration = Config.CharacterDetails(id)
+                        )
+                    }
                 )
             }
             is Config.CharacterDetails -> {
                 RootComponent.Child.CharacterDetailsChild(
-                    _root_ide_package_.com.zagirlek.presentation.screen.details.cmp.CharacterDetails(
-                        componentContext = component,
-                        getSingleCharacterUseCase = GetSingleCharacterUseCase(
-                            localCharacterRepository = app.localCharacterRepository
-                        ),
-                        characterId = config.characterId
-                    ) {
+                    characterDetailsComponent = characterDetailsComponentFactory(
+                        characterId = config.characterId,
+                        componentContext = component
+                    ){
                         nav.pop()
                     }
                 )
@@ -60,6 +56,16 @@ class Root(
         }
     }
 
+    class Factory(
+        private val characterDetailsComponentFactory: CharacterDetailsComponent.Factory,
+        private val charactersListComponentFactory: CharactersListComponent.Factory
+    ){
+        operator fun invoke(componentContext: ComponentContext): RootComponent = RootComponentImpl(
+            componentContext = componentContext,
+            characterDetailsComponentFactory = characterDetailsComponentFactory,
+            charactersListComponentFactory = charactersListComponentFactory
+        )
+    }
 
     @Serializable
     sealed class Config{

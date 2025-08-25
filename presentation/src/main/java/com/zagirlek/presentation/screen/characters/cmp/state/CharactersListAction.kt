@@ -1,7 +1,8 @@
 package com.zagirlek.presentation.screen.characters.cmp.state
 
-import com.zagirlek.rickandmortytest.core.cmp.Action
-import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
+import com.zagirlek.core.cmp.Action
+import com.zagirlek.core.model.CharacterFilters
+
 
 sealed class CharactersListAction: Action {
     data class LoadFilterCharactersList(val filter: CharacterFilters = CharacterFilters()): CharactersListAction()

@@ -14,12 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zagirlek.rickandmortytest.domain.model.CharacterStatus
-import com.zagirlek.rickandmortytest.ui.theme.Dark
-import com.zagirlek.rickandmortytest.ui.theme.Gray
-import com.zagirlek.rickandmortytest.ui.theme.Green
-import com.zagirlek.rickandmortytest.ui.theme.Red
-import com.zagirlek.rickandmortytest.ui.theme.White
+import com.zagirlek.core.model.CharacterStatus
 
 @Composable
 fun AliveStatusIndicator(

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
 }
 
 android {
@@ -33,12 +34,15 @@ android {
 }
 
 dependencies {
-    implementation(project(":data"))
     implementation(project(":core"))
 
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
     implementation(libs.koin.android)
+
+    ksp(libs.androidx.room.ksp)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
 
     implementation(libs.paging.common)
     implementation(libs.kotlin.serializatoin)

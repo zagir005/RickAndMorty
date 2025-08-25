@@ -1,6 +1,7 @@
 package com.zagirlek.presentation.screen.details.cmp.state
 
-import com.zagirlek.rickandmortytest.core.cmp.ViewState
+import com.zagirlek.core.cmp.ViewState
+import com.zagirlek.core.model.Character
 
 data class CharacterDetailsState(
     val character: Character = Character.emptyCharacter(),

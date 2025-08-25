@@ -1,30 +1,26 @@
 package com.zagirlek.data.repository
 
 import com.zagirlek.core.local.CharacterDatabase
-import com.zagirlek.core.local.entities.CharacterEntity
-import com.zagirlek.core.model.CharacterGender
-import com.zagirlek.core.model.CharacterStatus
+import com.zagirlek.core.model.Character
+import com.zagirlek.core.model.CharacterFilters
+import com.zagirlek.data.mapper.toDomain
 import com.zagirlek.domain.repository.LocalCharacterRepository
 
 class LocalCharacterRepositoryImpl(
-    private val characterDatabase: CharacterDatabase
+    characterDatabase: CharacterDatabase
 ): LocalCharacterRepository {
     private val characterDao = characterDatabase.characterDao()
 
     override suspend fun getFilterCharacters(
-        name: String?,
-        status: CharacterStatus?,
-        species: String?,
-        type: String?,
-        gender: CharacterGender?
-    ): List<CharacterEntity> =
+        characterFilters: CharacterFilters
+    ): List<Character> =
         characterDao.getCharacters(
-            name = name,
-            status = status,
-            species = species,
-            gender = gender
-        )
+            name = characterFilters.name,
+            status = characterFilters.status,
+            species = characterFilters.species,
+            gender = characterFilters.gender
+        ).map { it.toDomain() }
 
-    override suspend fun getCharacterById(id: Int): CharacterEntity? =
-        characterDao.getCharacterById(id)
+    override suspend fun getCharacterById(id: Int): Character? =
+        characterDao.getCharacterById(id)?.toDomain()
 }

@@ -20,10 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import com.zagirlek.rickandmortytest.R
-import com.zagirlek.rickandmortytest.ui.theme.Gray
-import com.zagirlek.rickandmortytest.ui.theme.White
-import com.zagirlek.rickandmortytest.ui.theme.WhiteGray
+import com.zagirlek.core.model.Character
+import com.zagirlek.presentation.R
 
 @Composable
 fun CharacterCard(

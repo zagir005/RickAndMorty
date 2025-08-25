@@ -1,9 +1,10 @@
 package com.zagirlek.presentation.screen.characters.cmp.reducer
 
 import androidx.paging.PagingData
-import com.zagirlek.rickandmortytest.core.cmp.reducer.Mutation
-import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
+import com.zagirlek.core.cmp.reducer.Mutation
+import com.zagirlek.core.model.CharacterFilters
 import kotlinx.coroutines.flow.Flow
+import com.zagirlek.core.model.Character
 
 sealed class CharactersListMutation: Mutation {
 

@@ -50,6 +50,10 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
 
+    implementation(libs.decompose)
+    implementation(libs.decompose.compose.extension)
+    implementation(libs.essenty.coroutines)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

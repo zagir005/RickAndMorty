@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zagirlek.rickandmortytest.R
+import com.zagirlek.presentation.R
 
 @Composable
 fun SpeciesText(

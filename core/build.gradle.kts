@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
+
 }
 
 android {
@@ -41,8 +43,10 @@ dependencies {
     implementation(libs.decompose.compose.extension)
     implementation(libs.essenty.coroutines)
 
+    ksp(libs.androidx.room.ksp)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.room.paging)
 
     implementation(libs.okhttp.logging.interceptor)
     implementation(libs.retrofit)

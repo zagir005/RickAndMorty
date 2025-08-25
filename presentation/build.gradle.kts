@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.ksp)
+    alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "2.1.10"
 }
 
@@ -32,11 +33,16 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    buildFeatures {
+        compose = true
+    }
+
 }
 
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
+    implementation(project(":core"))
 
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.core)
@@ -50,7 +56,11 @@ dependencies {
     implementation(libs.coil.okhttp)
 
     implementation(libs.paging.compose)
+    implementation(libs.paging.common)
+    implementation(libs.androidx.room.paging)
 
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)

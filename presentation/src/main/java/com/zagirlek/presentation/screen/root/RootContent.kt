@@ -6,8 +6,6 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.plus
 import com.arkivanov.decompose.extensions.compose.stack.animation.scale
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
-import com.zagirlek.rickandmortytest.ui.screen.characters.CharactersListUi
-import com.zagirlek.rickandmortytest.ui.screen.details.CharacterDetailsUi
 
 @Composable
 fun RootContent(rootComponent: RootComponent) {
@@ -17,10 +15,10 @@ fun RootContent(rootComponent: RootComponent) {
     ) {
         when (val child = it.instance) {
             is RootComponent.Child.CharacterDetailsChild -> _root_ide_package_.com.zagirlek.presentation.screen.details.CharacterDetailsUi(
-                characterDetailsComponent = child.characterDetails
+                characterDetailsComponent = child.characterDetailsComponent
             )
             is RootComponent.Child.CharactersListChild -> _root_ide_package_.com.zagirlek.presentation.screen.characters.CharactersListUi(
-                component = child.charactersList
+                component = child.charactersListComponent
             )
         }
     }

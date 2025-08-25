@@ -23,12 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.zagirlek.rickandmortytest.domain.model.CharacterFilters
-import com.zagirlek.rickandmortytest.domain.model.CharacterGender
-import com.zagirlek.rickandmortytest.domain.model.CharacterStatus
-import com.zagirlek.rickandmortytest.ui.theme.WhiteGray
+import com.zagirlek.core.model.CharacterFilters
+import com.zagirlek.core.model.CharacterGender
+import com.zagirlek.core.model.CharacterStatus
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

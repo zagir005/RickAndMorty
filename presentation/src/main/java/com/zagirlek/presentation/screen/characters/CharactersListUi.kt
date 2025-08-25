@@ -31,16 +31,16 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import com.zagirlek.rickandmortytest.ui.screen.characters.cmp.CharactersList
-import com.zagirlek.rickandmortytest.ui.screen.characters.cmp.state.CharactersListAction
-import com.zagirlek.rickandmortytest.ui.screen.characters.ui.CharacterCard
-import com.zagirlek.rickandmortytest.ui.screen.characters.ui.FilterCharacterBottomSheet
-import com.zagirlek.rickandmortytest.ui.screen.characters.ui.SearchTopAppBar
+import com.zagirlek.core.model.Character
+import com.zagirlek.presentation.screen.characters.cmp.state.CharactersListAction
+import com.zagirlek.presentation.screen.characters.cmp.state.CharactersListAction.LoadFilterCharactersList
+import com.zagirlek.presentation.screen.characters.ui.FilterCharacterBottomSheet
+import com.zagirlek.presentation.screen.characters.ui.SearchTopAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CharactersListUi(
-    component: com.zagirlek.presentation.screen.characters.cmp.CharactersList,
+    component: com.zagirlek.presentation.screen.characters.cmp.CharactersListComponent,
 ) {
     val uiState by component.state.subscribeAsState()
 
@@ -60,17 +60,17 @@ fun CharactersListUi(
 
     Scaffold(
         topBar = {
-            _root_ide_package_.com.zagirlek.presentation.screen.characters.ui.SearchTopAppBar(
+            SearchTopAppBar(
                 query = uiState.search,
                 onSearch = {
                     component.action(
-                        _root_ide_package_.com.zagirlek.presentation.screen.characters.cmp.state.CharactersListAction.Search(
+                        CharactersListAction.Search(
                             name = it.orEmpty()
                         )
                     )
                 },
                 onFilter = {
-                    component.action(_root_ide_package_.com.zagirlek.presentation.screen.characters.cmp.state.CharactersListAction.ShowFilterBottomSheet)
+                    component.action(CharactersListAction.ShowFilterBottomSheet)
                 },
                 scrollBehavior = topAppBarScrollBehavior,
                 modifier = Modifier
@@ -82,18 +82,15 @@ fun CharactersListUi(
             modifier = Modifier
                 .padding(paddingValues)
         ) {
-
-
-
             if (uiState.isFilterSheetShown){
-                _root_ide_package_.com.zagirlek.presentation.screen.characters.ui.FilterCharacterBottomSheet(
+                FilterCharacterBottomSheet(
                     currFilters = uiState.characterFilters,
                     onDismiss = {
-                        component.action(_root_ide_package_.com.zagirlek.presentation.screen.characters.cmp.state.CharactersListAction.HideFilterBottomSheet)
+                        component.action(CharactersListAction.HideFilterBottomSheet)
                     },
                     onFilter = {
                         component.action(
-                            _root_ide_package_.com.zagirlek.presentation.screen.characters.cmp.state.CharactersListAction.LoadFilterCharactersList(
+                            LoadFilterCharactersList(
                                 filter = it
                             )
                         )
@@ -113,7 +110,7 @@ fun CharactersListUi(
                 PaginatedCharactersList(
                     characterList = characterGridItems,
                     onCharacterClick = { id ->
-                        component.action(_root_ide_package_.com.zagirlek.presentation.screen.characters.cmp.state.CharactersListAction.ItemClick(id))
+                        component.action(CharactersListAction.ItemClick(id))
                     },
                     modifier = Modifier
                         .nestedScroll(topAppBarScrollBehavior.nestedScrollConnection),

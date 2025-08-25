@@ -1,15 +1,14 @@
 package com.zagirlek.domain.repository
 
+import androidx.paging.PagingData
 import com.zagirlek.core.model.Character
 import com.zagirlek.core.model.CharacterFilters
+import kotlinx.coroutines.flow.Flow
 
-interface LocalCharacterRepository {
+interface PagingCharacterRepository {
 
-    suspend fun getFilterCharacters(
+    fun getPagedFlowCharacters(
         characterFilters: CharacterFilters
-    ): List<Character>
+    ): Flow<PagingData<Character>>
 
-    suspend fun getCharacterById(
-        id: Int
-    ): Character?
 }
