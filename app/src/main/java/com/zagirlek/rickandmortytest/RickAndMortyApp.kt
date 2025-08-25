@@ -1,42 +1,24 @@
 package com.zagirlek.rickandmortytest
 
 import android.app.Application
-import androidx.room.Room
-import com.zagirlek.rickandmortytest.data.local.CharacterDatabase
-import com.zagirlek.rickandmortytest.data.network.retrofit.RickAndMortyRetrofit
-import com.zagirlek.rickandmortytest.data.repository.RemoteCharacterRepositoryImpl
-import com.zagirlek.rickandmortytest.data.repository.CharactersPagingRepositoryImpl
-import com.zagirlek.rickandmortytest.data.repository.LocalCharacterRepositoryImpl
-import com.zagirlek.rickandmortytest.domain.repository.RemoteCharacterRepository
-import com.zagirlek.rickandmortytest.domain.repository.CharactersPagingRepository
-import com.zagirlek.rickandmortytest.domain.repository.LocalCharacterRepository
+import com.zagirlek.core.di.coreModule
+import com.zagirlek.data.di.dataModule
+import com.zagirlek.domain.di.domainModule
+import com.zagirlek.presentation.di.presentationModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 class RickAndMortyApp: Application() {
-    lateinit var characterDatabase: CharacterDatabase
-        private set
 
     override fun onCreate() {
         super.onCreate()
 
-        characterDatabase = Room.databaseBuilder(
-            context = this,
-            klass = CharacterDatabase::class.java,
-            name = "CharacterDatabase"
-        )
-            .fallbackToDestructiveMigration(dropAllTables = true)
-            .build()
-    }
+        startKoin {
+            androidContext(this@RickAndMortyApp)
+            modules(
+                coreModule, dataModule, domainModule, presentationModule
+            )
+        }
 
-    val localCharacterRepository: LocalCharacterRepository by lazy {
-        LocalCharacterRepositoryImpl(
-            characterDatabase
-        )
-    }
-
-    val charactersPagingRepository: CharactersPagingRepository by lazy {
-        CharactersPagingRepositoryImpl(
-            charactersService = RickAndMortyRetrofit.provideCharacterService(),
-            characterDatabase = characterDatabase
-        )
     }
 }
